@@ -1,0 +1,854 @@
+{
+ "ui.click": {
+  "category": "رابط کاربری",
+  "fa": "کلیک موس/دکمه",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "ui.tap": {
+  "category": "رابط کاربری",
+  "fa": "ضربه روی صفحه‌ی گوشی",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "ui.pop": {
+  "category": "رابط کاربری",
+  "fa": "پاپ (ظاهر شدن چیزی)",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "ui.bubble": {
+  "category": "رابط کاربری",
+  "fa": "حباب / پیام چت",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "ui.toggle": {
+  "category": "رابط کاربری",
+  "fa": "سوییچ روشن/خاموش",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "ui.notif": {
+  "category": "رابط کاربری",
+  "fa": "نوتیفیکیشن",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "ui.ding": {
+  "category": "رابط کاربری",
+  "fa": "دینگ",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "ui.chime-up": {
+  "category": "رابط کاربری",
+  "fa": "چایم بالارونده (موفقیت/شروع)",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "ui.chime-down": {
+  "category": "رابط کاربری",
+  "fa": "چایم پایین‌رونده (پایان/لغو)",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "ui.success": {
+  "category": "رابط کاربری",
+  "fa": "موفقیت / تیک",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "ui.error": {
+  "category": "رابط کاربری",
+  "fa": "خطا",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "ui.warning": {
+  "category": "رابط کاربری",
+  "fa": "هشدار کوتاه",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "ui.beep": {
+  "category": "رابط کاربری",
+  "fa": "بیپ",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "ui.typing": {
+  "category": "رابط کاربری",
+  "fa": "تایپ کردن (۱.۲ ثانیه)",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "ui.enter": {
+  "category": "رابط کاربری",
+  "fa": "اینتر محکم",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "ui.scroll": {
+  "category": "رابط کاربری",
+  "fa": "اسکرول",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "ui.swipe": {
+  "category": "رابط کاربری",
+  "fa": "سوایپ",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "ui.camera": {
+  "category": "رابط کاربری",
+  "fa": "شاتر دوربین / اسکرین‌شات",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "ui.count": {
+  "category": "رابط کاربری",
+  "fa": "تیک شمارنده",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "move.whoosh-fast": {
+  "category": "حرکت",
+  "fa": "ووش سریع",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "move.whoosh": {
+  "category": "حرکت",
+  "fa": "ووش معمولی",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "move.whoosh-slow": {
+  "category": "حرکت",
+  "fa": "ووش آرام و بلند",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "move.swoosh-up": {
+  "category": "حرکت",
+  "fa": "سووش رو به بالا",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "move.swoosh-down": {
+  "category": "حرکت",
+  "fa": "سووش رو به پایین",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "move.riser": {
+  "category": "حرکت",
+  "fa": "رایزر کوتاه (قبل از هوک)",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "move.riser-long": {
+  "category": "حرکت",
+  "fa": "رایزر بلند",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "move.drop": {
+  "category": "حرکت",
+  "fa": "دراپ (افت ناگهانی)",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "move.zoom-in": {
+  "category": "حرکت",
+  "fa": "زوم به داخل",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "move.zoom-out": {
+  "category": "حرکت",
+  "fa": "زوم به بیرون",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "move.slide": {
+  "category": "حرکت",
+  "fa": "کشیدن/سُر خوردن",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "hit.thud": {
+  "category": "ضربه",
+  "fa": "تاد بم (تأکید)",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "hit.impact": {
+  "category": "ضربه",
+  "fa": "ضربه‌ی سنگین",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "hit.boom": {
+  "category": "ضربه",
+  "fa": "بوم نرم سینمایی",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "hit.slam": {
+  "category": "ضربه",
+  "fa": "کوبیدن در / بسته شدن",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "hit.stamp": {
+  "category": "ضربه",
+  "fa": "مهر زدن / تایید",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "hit.knock": {
+  "category": "ضربه",
+  "fa": "در زدن",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "money.coin": {
+  "category": "پول",
+  "fa": "سکه",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "money.coins": {
+  "category": "پول",
+  "fa": "ریختن چند سکه",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "money.register": {
+  "category": "پول",
+  "fa": "صندوق فروشگاه (کَچینگ)",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "money.card": {
+  "category": "پول",
+  "fa": "کشیدن کارت",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "money.pos": {
+  "category": "پول",
+  "fa": "بیپ کارتخوان (تایید پرداخت)",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "tech.glitch": {
+  "category": "فنی",
+  "fa": "گلیچ دیجیتال",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "tech.data": {
+  "category": "فنی",
+  "fa": "جریان داده (بیپ‌های سریع)",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "tech.hum": {
+  "category": "فنی",
+  "fa": "وزوز سرور (۲ ثانیه)",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "tech.power-up": {
+  "category": "فنی",
+  "fa": "روشن شدن",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "tech.power-down": {
+  "category": "فنی",
+  "fa": "خاموش شدن / خوابیدن سرور",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "tech.scan": {
+  "category": "فنی",
+  "fa": "اسکن",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "tech.laser": {
+  "category": "فنی",
+  "fa": "لیزر",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "tech.connect": {
+  "category": "فنی",
+  "fa": "وصل شدن",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "tech.disconnect": {
+  "category": "فنی",
+  "fa": "قطع شدن",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "tech.modem": {
+  "category": "فنی",
+  "fa": "صدای اتصال قدیمی",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "alert.alarm": {
+  "category": "هشدار",
+  "fa": "آلارم",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "alert.siren": {
+  "category": "هشدار",
+  "fa": "آژیر",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "alert.buzzer": {
+  "category": "هشدار",
+  "fa": "بازر اشتباه",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "alert.tension": {
+  "category": "هشدار",
+  "fa": "تنش (نت ممتد)",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "alert.heartbeat": {
+  "category": "هشدار",
+  "fa": "ضربان قلب",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "time.tick": {
+  "category": "زمان",
+  "fa": "تیک",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "time.ticking": {
+  "category": "زمان",
+  "fa": "تیک‌تاک ساعت (۲ ثانیه)",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "time.timer-end": {
+  "category": "زمان",
+  "fa": "پایان تایمر",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "fx.sparkle": {
+  "category": "افکت",
+  "fa": "درخشش",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "fx.magic": {
+  "category": "افکت",
+  "fa": "جادو / تبدیل",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "fx.reward": {
+  "category": "افکت",
+  "fa": "جایزه / لول آپ",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "fx.pluck": {
+  "category": "افکت",
+  "fa": "پلاک ملایم",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "fx.bell": {
+  "category": "افکت",
+  "fa": "زنگ",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "fx.paper": {
+  "category": "افکت",
+  "fa": "کاغذ / ورق",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "fx.wrong": {
+  "category": "افکت",
+  "fa": "جواب غلط",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "fx.right": {
+  "category": "افکت",
+  "fa": "جواب درست",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "fx.boing": {
+  "category": "افکت",
+  "fa": "بویینگ (طنز)",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "fx.drum-roll": {
+  "category": "افکت",
+  "fa": "درام‌رول (قبل از اعلام)",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "fx.crowd": {
+  "category": "افکت",
+  "fa": "همهمه‌ی جمعیت (ساخته‌شده)",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ },
+ "fx.engine": {
+  "category": "افکت",
+  "fa": "موتور / کامیون",
+  "files": [
+   "1.wav",
+   "2.wav",
+   "3.wav",
+   "4.wav"
+  ],
+  "source": "self-made (scripts/sfx-gen.mjs)",
+  "license": "own"
+ }
+}

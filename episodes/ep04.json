@@ -1,0 +1,302 @@
+{
+ "id": "ep04",
+ "title": "دیجی‌کالا چطور سفارش رو همون روز تحویل می‌ده؟",
+ "voice": "آیلین",
+ "question": "سریع‌ترین سفارشی که به دستت رسیده چقدر طول کشید؟",
+ "finalBig": null,
+ "objects": [
+  {
+   "id": "seller",
+   "type": "warehouse",
+   "x": 2.2,
+   "z": 2.2,
+   "from": 0,
+   "label": "انبار فروشنده"
+  },
+  {
+   "id": "center",
+   "type": "center",
+   "x": -3.6,
+   "z": -1.6,
+   "from": 0,
+   "label": "مرکز پردازش دیجی‌کالا"
+  },
+  {
+   "id": "home",
+   "type": "house",
+   "x": 2.6,
+   "z": -5.4,
+   "from": 0,
+   "label": "خونه‌ی تو"
+  },
+  {
+   "id": "truck",
+   "type": "truck",
+   "x": -0.6,
+   "z": -4.6,
+   "from": 2,
+   "label": "پیک"
+  }
+ ],
+ "lines": [
+  {
+   "text": "دیجی‌کالا چطور بعضی سفارش‌ها رو همون روز می‌رسونه؟",
+   "chip": "تحویل همون‌روز",
+   "keys": [
+    "همون",
+    "روز"
+   ],
+   "alert": false,
+   "do": {
+    "cam": [
+     "seller",
+     "center",
+     "home"
+    ],
+    "icons": [
+     {
+      "icon": "clock",
+      "on": "home",
+      "at": 0.45,
+      "until": 1
+     }
+    ]
+   }
+  },
+  {
+   "text": "تو حالت عادی، کالا اول از فروشنده می‌ره به مرکز پردازش دیجی‌کالا. اونجا ثبت می‌شه، بسته‌بندی می‌شه، و بعد راه میفته سمت تو. همین مسیر یک تا چند روز طول می‌کشه.",
+   "chip": "۱ · مسیر معمولی",
+   "keys": [
+    "مرکز",
+    "پردازش"
+   ],
+   "alert": false,
+   "do": {
+    "cam": [
+     "seller",
+     "center",
+     "home"
+    ],
+    "routes": [
+     {
+      "from": "seller",
+      "to": "center",
+      "at": [
+       0.05,
+       0.3
+      ],
+      "until": 5
+     },
+     {
+      "from": "center",
+      "to": "home",
+      "at": [
+       0.62,
+       0.85
+      ],
+      "until": 5
+     }
+    ],
+    "packets": [
+     {
+      "icon": "box",
+      "from": "seller",
+      "to": "center",
+      "at": [
+       0.08,
+       0.35
+      ]
+     },
+     {
+      "icon": "box",
+      "from": "center",
+      "to": "home",
+      "at": [
+       0.65,
+       0.95
+      ]
+     }
+    ],
+    "icons": [
+     {
+      "icon": "check",
+      "on": "center",
+      "at": 0.4,
+      "until": 2,
+      "dx": -0.7
+     },
+     {
+      "icon": "box",
+      "on": "center",
+      "at": 0.52,
+      "until": 2,
+      "dx": 0.7
+     },
+     {
+      "icon": "calendar",
+      "on": "home",
+      "at": 0.9,
+      "until": 3
+     }
+    ]
+   }
+  },
+  {
+   "text": "پس راز تحویل همون‌روز، سرعت پیک‌ها نیست.",
+   "chip": "راز، سرعت پیک نیست",
+   "keys": [
+    "پیک‌ها"
+   ],
+   "alert": true,
+   "do": {
+    "cam": [
+     "truck"
+    ],
+    "maxZoom": 1.7,
+    "icons": [
+     {
+      "icon": "cross",
+      "on": "truck",
+      "at": 0.45,
+      "until": 3
+     }
+    ]
+   }
+  },
+  {
+   "text": "پیک هر چقدر هم سریع باشه، بسته باید اول اون مسیر طولانی رو بره.",
+   "chip": "۲ · مسیر طولانی",
+   "keys": [
+    "طولانی"
+   ],
+   "alert": false,
+   "do": {
+    "cam": [
+     "seller",
+     "center",
+     "home"
+    ],
+    "routes": [
+     {
+      "from": "seller",
+      "to": "center",
+      "at": [
+       0,
+       0.01
+      ],
+      "dots": 5,
+      "until": 5
+     },
+     {
+      "from": "center",
+      "to": "home",
+      "at": [
+       0,
+       0.01
+      ],
+      "dots": 5,
+      "until": 5
+     }
+    ],
+    "icons": [
+     {
+      "icon": "clock",
+      "on": "center",
+      "at": 0.3,
+      "until": 4
+     }
+    ]
+   }
+  },
+  {
+   "text": "رازش اینه که کالا اصلاً به انبار دیجی‌کالا نمی‌ره!",
+   "chip": "کالا به انبار نمی‌ره!",
+   "keys": [
+    "نمی‌ره!"
+   ],
+   "alert": true,
+   "do": {
+    "cam": [
+     "center"
+    ],
+    "maxZoom": 1.4,
+    "dim": [
+     "center"
+    ],
+    "icons": [
+     {
+      "icon": "cross",
+      "on": "center",
+      "at": 0.3,
+      "until": 6
+     }
+    ]
+   }
+  },
+  {
+   "text": "تو ارسال همون‌روز، سفارش مستقیم از انبار خود فروشنده برداشته می‌شه و پیک یک‌راست میارتش دم در. یعنی سریع‌ترین راه، حذف کردن یه ایستگاه بود، نه تندتر دویدن.",
+   "chip": "۳ · مستقیم از فروشنده",
+   "keys": [
+    "مستقیم",
+    "حذف"
+   ],
+   "alert": false,
+   "do": {
+    "cam": [
+     "seller",
+     "home",
+     "center"
+    ],
+    "dim": [
+     "center"
+    ],
+    "routes": [
+     {
+      "from": "seller",
+      "to": "home",
+      "at": [
+       0.15,
+       0.5
+      ],
+      "dots": 5
+     }
+    ],
+    "packets": [
+     {
+      "icon": "truck",
+      "from": "seller",
+      "to": "home",
+      "at": [
+       0.2,
+       0.62
+      ]
+     }
+    ],
+    "icons": [
+     {
+      "icon": "check",
+      "on": "home",
+      "at": 0.66
+     }
+    ]
+   }
+  },
+  {
+   "text": "سریع‌ترین سفارشی که به دستت رسیده چقدر طول کشید؟ برامون بنویس.",
+   "chip": "تو چی؟",
+   "keys": [],
+   "alert": false,
+   "do": {
+    "cam": [
+     "seller",
+     "center",
+     "home",
+     "truck"
+    ],
+    "dim": [
+     "center"
+    ]
+   }
+  }
+ ]
+}

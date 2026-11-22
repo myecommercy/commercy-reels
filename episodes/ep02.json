@@ -1,0 +1,344 @@
+{
+ "id": "ep02",
+ "title": "چرا سایت‌ها موقع حراج می‌خوابن؟",
+ "voice": "علی",
+ "fix": {
+  "line": 6
+ },
+ "question": "سایت تو آماده‌ی بلک‌فرایدی هست؟",
+ "finalBig": [
+  "کش",
+  "·",
+  "صف",
+  "·",
+  "تست فشار"
+ ],
+ "objects": [
+  {
+   "id": "crowd",
+   "type": "crowd",
+   "x": -0.5,
+   "z": 2.6,
+   "from": 0,
+   "label": "خریدارها",
+   "w": 4.6,
+   "d": 2.8
+  },
+  {
+   "id": "server",
+   "type": "server",
+   "x": 0,
+   "z": -2.2,
+   "from": 0,
+   "label": "سرور فروشگاه"
+  },
+  {
+   "id": "db",
+   "type": "db",
+   "x": -0.2,
+   "z": -6.4,
+   "from": 0,
+   "label": "دیتابیس"
+  },
+  {
+   "id": "cache",
+   "type": "cache",
+   "x": 3.6,
+   "z": -2.6,
+   "from": 6,
+   "label": "کش"
+  }
+ ],
+ "lines": [
+  {
+   "text": "همه با هم دکمه‌ی خرید رو زدن و سایت تسلیم شد. چرا؟",
+   "chip": "چرا سایت‌ها موقع حراج می‌خوابن؟",
+   "keys": [
+    "تسلیم"
+   ],
+   "alert": false,
+   "do": {
+    "cam": [
+     "crowd",
+     "server"
+    ],
+    "pulse": [
+     "crowd"
+    ],
+    "routes": [
+     {
+      "from": "crowd",
+      "to": "server",
+      "at": [
+       0.1,
+       0.55
+      ],
+      "dots": 14,
+      "until": 1
+     }
+    ],
+    "icons": [
+     {
+      "icon": "warning",
+      "on": "server",
+      "at": 0.6,
+      "until": 1
+     }
+    ],
+    "alert": [
+     "server"
+    ]
+   }
+  },
+  {
+   "text": "هر بازدید یعنی چند تا درخواست به سرور: صفحه رو بساز، قیمت رو بخون، موجودی رو چک کن. تو یه روز عادی، سرور از پسش برمیاد.",
+   "chip": "۱ · هر بازدید = چند درخواست",
+   "keys": [
+    "درخواست"
+   ],
+   "alert": false,
+   "do": {
+    "cam": [
+     "server"
+    ],
+    "maxZoom": 1.5,
+    "routes": [
+     {
+      "from": "crowd",
+      "to": "server",
+      "at": [
+       0.05,
+       0.3
+      ],
+      "dots": 3,
+      "until": 2
+     }
+    ],
+    "icons": [
+     {
+      "icon": "invoice",
+      "on": "server",
+      "at": 0.25,
+      "dx": -1.1,
+      "until": 2
+     },
+     {
+      "icon": "coin",
+      "on": "server",
+      "at": 0.42,
+      "until": 2
+     },
+     {
+      "icon": "box",
+      "on": "server",
+      "at": 0.6,
+      "dx": 1.1,
+      "until": 2
+     },
+     {
+      "icon": "check",
+      "on": "server",
+      "at": 0.85,
+      "dy": 1.3,
+      "until": 2
+     }
+    ]
+   }
+  },
+  {
+   "text": "ولی مشکل تعداد آدم‌ها نیست؛ مشکل اینه که همه دقیقاً تو یک لحظه کلیک می‌کنن.",
+   "chip": "همه در یک لحظه!",
+   "keys": [
+    "یک",
+    "لحظه"
+   ],
+   "alert": true,
+   "do": {
+    "cam": [
+     "crowd",
+     "server"
+    ],
+    "pulse": [
+     "crowd"
+    ],
+    "routes": [
+     {
+      "from": "crowd",
+      "to": "server",
+      "at": [
+       0.45,
+       0.7
+      ],
+      "dots": 30,
+      "until": 4
+     }
+    ]
+   }
+  },
+  {
+   "text": "درخواست‌ها پشت هم صف می‌کشن، صف طولانی می‌شه و سرور دیگه جواب نمی‌ده.",
+   "chip": "۲ · صف درخواست‌ها",
+   "keys": [
+    "صف",
+    "طولانی"
+   ],
+   "alert": false,
+   "do": {
+    "cam": [
+     "crowd",
+     "server"
+    ],
+    "queue": {
+     "from": "crowd",
+     "to": "server",
+     "n": 12,
+     "at": 0.1,
+     "until": 4
+    },
+    "alert": [
+     "server"
+    ],
+    "icons": [
+     {
+      "icon": "stop",
+      "on": "server",
+      "at": 0.65,
+      "until": 4
+     }
+    ]
+   }
+  },
+  {
+   "text": "و گاهی کل سایت فقط به‌خاطر یک جدول تو دیتابیس می‌خوابه!",
+   "chip": "یک جدول، کل سایت!",
+   "keys": [
+    "جدول"
+   ],
+   "alert": true,
+   "do": {
+    "cam": [
+     "server",
+     "db"
+    ],
+    "routes": [
+     {
+      "from": "server",
+      "to": "db",
+      "at": [
+       0.15,
+       0.5
+      ],
+      "dots": 8,
+      "until": 6
+     }
+    ],
+    "alert": [
+     "db"
+    ],
+    "icons": [
+     {
+      "icon": "warning",
+      "on": "db",
+      "at": 0.55,
+      "until": 5
+     }
+    ]
+   }
+  },
+  {
+   "text": "چون هر خرید باید موجودی رو قفل کنه، و هزار تا خرید هم‌زمان پشت همون یک قفل گیر می‌کنن.",
+   "chip": "۳ · قفل موجودی",
+   "keys": [
+    "قفل"
+   ],
+   "alert": false,
+   "do": {
+    "cam": [
+     "server",
+     "db"
+    ],
+    "queue": {
+     "from": "server",
+     "to": "db",
+     "n": 10,
+     "at": 0.4,
+     "until": 6
+    },
+    "icons": [
+     {
+      "icon": "lock",
+      "on": "db",
+      "at": 0.15,
+      "until": 6
+     }
+    ],
+    "alert": [
+     "db"
+    ]
+   }
+  },
+  {
+   "text": "راه‌حل؟ کش، صف‌بندی سفارش‌ها و تست فشار قبل از حراج. سایت تو آماده‌ی بلک‌فرایدی هست؟ برامون بنویس.",
+   "chip": "راه‌حل",
+   "keys": [
+    "کش،",
+    "صف‌بندی",
+    "تست",
+    "فشار"
+   ],
+   "alert": false,
+   "do": {
+    "cam": [
+     "crowd",
+     "server",
+     "db",
+     "cache"
+    ],
+    "routes": [
+     {
+      "from": "crowd",
+      "to": "cache",
+      "at": [
+       0.05,
+       0.25
+      ],
+      "dots": 6
+     },
+     {
+      "from": "cache",
+      "to": "server",
+      "at": [
+       0.15,
+       0.3
+      ]
+     },
+     {
+      "from": "server",
+      "to": "db",
+      "at": [
+       0.0,
+       0.01
+      ]
+     }
+    ],
+    "icons": [
+     {
+      "icon": "bolt",
+      "on": "cache",
+      "at": 0.08
+     },
+     {
+      "icon": "order",
+      "on": "server",
+      "at": 0.22
+     },
+     {
+      "icon": "check",
+      "on": "db",
+      "at": 0.36
+     }
+    ]
+   }
+  }
+ ]
+}
