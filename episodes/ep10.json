@@ -1,0 +1,405 @@
+{
+ "id": "ep10",
+ "title": "کش چیه و چطور یک صفحه رو از ۴ ثانیه به نیم ثانیه می‌رسونه؟",
+ "voice": "علی",
+ "theme": "commercy-dark",
+ "music": "curious",
+ "question": "تو سایتت کش فعاله؟",
+ "finalBig": [
+  "کش",
+  "=",
+  "سرعت",
+  "+",
+  "درستی"
+ ],
+ "objects": [
+  {
+   "id": "phone",
+   "type": "phone",
+   "x": -2.2,
+   "z": 4.0,
+   "from": 0,
+   "label": "مشتری"
+  },
+  {
+   "id": "site",
+   "type": "site",
+   "x": 0.2,
+   "z": -1.2,
+   "from": 0,
+   "label": "سایت",
+   "w": 1.8,
+   "d": 1.8,
+   "h": 1.5
+  },
+  {
+   "id": "db",
+   "type": "db",
+   "x": 3.8,
+   "z": -4.6,
+   "from": 1,
+   "label": "دیتابیس"
+  },
+  {
+   "id": "hourglass",
+   "type": "hourglass",
+   "x": 3.0,
+   "z": 2.8,
+   "from": 1
+  },
+  {
+   "id": "cache",
+   "type": "cache",
+   "x": -3.8,
+   "z": -1.6,
+   "from": 3,
+   "label": "کش"
+  },
+  {
+   "id": "tag",
+   "type": "tag",
+   "x": 3.6,
+   "z": 0.8,
+   "from": 5,
+   "label": "قیمت"
+  }
+ ],
+ "lines": [
+  {
+   "text": "کش چیه و چطور یک صفحه رو از ۴ ثانیه به نیم ثانیه می‌رسونه؟",
+   "say": "[curious] کَش چیه و چطور یک صفحه رو از ۴ ثانیه به نیم ثانیه می‌رسونه؟",
+   "chip": "کش یعنی چی؟",
+   "keys": [
+    "۴",
+    "ثانیه"
+   ],
+   "alert": false,
+   "do": {
+    "cam": [
+     "phone",
+     "site"
+    ],
+    "icons": [
+     {
+      "icon": "page",
+      "on": "site",
+      "at": 0.25,
+      "until": 1
+     },
+     {
+      "icon": "timer",
+      "on": "phone",
+      "at": 0.55,
+      "until": 1,
+      "anim": "pulse"
+     }
+    ]
+   }
+  },
+  {
+   "text": "سایتت هر بار داره یک کار تکراری رو از صفر انجام می‌ده.",
+   "say": "[conversational] سایتت هر بار داره یک کار تکراری رو از صفر انجام می‌ده.",
+   "chip": "۱ · کار تکراری از صفر",
+   "keys": [
+    "تکراری"
+   ],
+   "alert": false,
+   "do": {
+    "cam": [
+     "phone",
+     "site",
+     "db"
+    ],
+    "routes": [
+     {
+      "from": "phone",
+      "to": "site",
+      "at": [
+       0.15,
+       0.4
+      ],
+      "dots": 4,
+      "until": 3
+     },
+     {
+      "from": "site",
+      "to": "db",
+      "at": [
+       0.45,
+       0.8
+      ],
+      "dots": 5,
+      "until": 3,
+      "pingpong": true
+     }
+    ],
+    "icons": [
+     {
+      "icon": "database",
+      "on": "db",
+      "at": 0.5,
+      "until": 3
+     },
+     {
+      "icon": "hourglass",
+      "on": "hourglass",
+      "at": 0.7,
+      "until": 3,
+      "anim": "shake"
+     }
+    ]
+   }
+  },
+  {
+   "text": "هر بازدید یعنی دوباره پرس‌وجو، دوباره ساخت صفحه، دوباره چند ثانیه صبر.",
+   "say": "[short pause] [serious] هر بازدید یعنی دوباره پرس‌وجو، دوباره ساخت صفحه، دوباره چند ثانیه صبر.",
+   "chip": "هر بار از اول",
+   "keys": [
+    "دوباره"
+   ],
+   "alert": true,
+   "do": {
+    "cam": [
+     "phone",
+     "site",
+     "db",
+     "hourglass"
+    ],
+    "maxZoom": 1.35,
+    "alert": [
+     "hourglass",
+     "site"
+    ],
+    "queue": {
+     "from": "phone",
+     "to": "site",
+     "n": 5,
+     "at": 0.25,
+     "until": 3
+    },
+    "icons": [
+     {
+      "icon": "clock",
+      "on": "site",
+      "at": 0.4,
+      "until": 3,
+      "anim": "shake"
+     }
+    ]
+   }
+  },
+  {
+   "text": "کش یعنی سایت یه بار کار رو انجام می‌ده و جوابش رو حفظ می‌کنه.",
+   "say": "[confident] کَش یعنی سایت یه بار کار رو انجام می‌ده و جوابش رو حفظ می‌کنه.",
+   "chip": "۲ · یه بار بساز، نگه دار",
+   "keys": [
+    "حفظ"
+   ],
+   "alert": false,
+   "do": {
+    "cam": [
+     "site",
+     "cache",
+     "db"
+    ],
+    "routes": [
+     {
+      "from": "site",
+      "to": "cache",
+      "at": [
+       0.35,
+       0.75
+      ],
+      "dots": 4,
+      "until": 5
+     }
+    ],
+    "packets": [
+     {
+      "icon": "page",
+      "from": "db",
+      "to": "cache",
+      "at": [
+       0.2,
+       0.55
+      ]
+     }
+    ],
+    "icons": [
+     {
+      "icon": "bolt",
+      "on": "cache",
+      "at": 0.7,
+      "until": 5,
+      "anim": "spin"
+     }
+    ],
+    "pulse": [
+     "cache"
+    ],
+    "dim": [
+     "db"
+    ]
+   }
+  },
+  {
+   "text": "دفعه‌ی بعد همون جواب آماده‌رو می‌ده؛ صفحه می‌پره بالا، نزدیک نیم ثانیه.",
+   "say": "[amazed] دفعه‌ی بعد همون جواب آماده‌رو می‌ده؛ صفحه می‌پره بالا، نزدیک نیم ثانیه.",
+   "chip": "۳ · نیم ثانیه",
+   "keys": [
+    "آماده‌رو",
+    "نیم"
+   ],
+   "alert": false,
+   "do": {
+    "cam": [
+     "phone",
+     "cache",
+     "site"
+    ],
+    "routes": [
+     {
+      "from": "phone",
+      "to": "cache",
+      "at": [
+       0.15,
+       0.45
+      ],
+      "dots": 3,
+      "until": 6
+     },
+     {
+      "from": "cache",
+      "to": "phone",
+      "at": [
+       0.5,
+       0.75
+      ],
+      "dots": 3,
+      "until": 6,
+      "big": true
+     }
+    ],
+    "icons": [
+     {
+      "icon": "speed",
+      "on": "phone",
+      "at": 0.7,
+      "until": 5,
+      "anim": "bounce"
+     },
+     {
+      "icon": "check",
+      "on": "cache",
+      "at": 0.55,
+      "until": 5,
+      "anim": "flip"
+     }
+    ],
+    "pulse": [
+     "cache",
+     "phone"
+    ],
+    "dim": [
+     "db",
+     "hourglass"
+    ]
+   }
+  },
+  {
+   "text": "ولی اگه قیمت محصول عوض بشه و کش هنوز قیمت قبلی رو نشون بده چی؟",
+   "say": "[surprised] ولی اگه قیمت محصول عوض بشه و کَش هنوز قیمت قبلی رو نشون بده چی؟",
+   "chip": "قیمت کهنه در کش؟",
+   "keys": [
+    "قبلی"
+   ],
+   "alert": true,
+   "sfx": [
+    {
+     "name": "ui.warning",
+     "at": 0.35
+    }
+   ],
+   "do": {
+    "cam": [
+     "cache",
+     "tag",
+     "phone"
+    ],
+    "maxZoom": 1.45,
+    "alert": [
+     "cache",
+     "tag"
+    ],
+    "icons": [
+     {
+      "icon": "warning",
+      "on": "cache",
+      "at": 0.4,
+      "until": 6,
+      "anim": "shake"
+     },
+     {
+      "icon": "percent",
+      "on": "tag",
+      "at": 0.55,
+      "until": 6,
+      "anim": "pulse"
+     }
+    ]
+   }
+  },
+  {
+   "text": "برای همینه که کش باید منقضی بشه، یا با تغییر قیمت پاک بشه. سرعت بدون درستی بی‌معنیه. تو سایتت کش فعاله؟ برامون بنویس.",
+   "say": "[warmly] برای همینه که کَش باید منقضی بشه، یا با تغییر قیمت پاک بشه. سرعت بدون درستی بی‌معنیه. تو سایتت کَش فعاله؟ برامون بنویس.",
+   "chip": "انقضا یا پاک‌سازی",
+   "keys": [
+    "منقضی",
+    "پاک"
+   ],
+   "alert": false,
+   "sfx": [
+    {
+     "name": "fx.reward",
+     "at": 0.08
+    }
+   ],
+   "do": {
+    "cam": [
+     "phone",
+     "site",
+     "cache",
+     "tag",
+     "db"
+    ],
+    "maxZoom": 0.95,
+    "icons": [
+     {
+      "icon": "refresh",
+      "on": "cache",
+      "at": 0.15,
+      "until": 7,
+      "anim": "spin"
+     },
+     {
+      "icon": "check",
+      "on": "tag",
+      "at": 0.35,
+      "until": 7,
+      "anim": "flip"
+     },
+     {
+      "icon": "bolt",
+      "on": "site",
+      "at": 0.5,
+      "until": 7
+     }
+    ],
+    "pulse": [
+     "cache",
+     "tag"
+    ]
+   }
+  }
+ ]
+}

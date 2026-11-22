@@ -7,6 +7,7 @@ import path from "path";
 import { spawnSync } from "child_process";
 import { fileURLToPath } from "url";
 import { readWav } from "./lib/dsp.mjs";
+import { parseSrt, srtTimings } from "./lib/srt.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SR = 44100;
@@ -428,8 +429,15 @@ for (const f of epFiles) {
   }
   const chars = ep.lines.map((l) => l.text.length);
   let vo = decode(full);
+  // vo.srt = made from the FINAL public/<id>/vo.wav (works with fix takes, no time shift)
+  // any other .srt = made from full.mp3
+  const voSrt = path.join(dir, "vo.srt");
+  const srtFile = fs.existsSync(voSrt) ? voSrt : fs.readdirSync(dir).map((f) => path.join(dir, f)).find((f) => /\.srt$/i.test(f));
+  const srtIsFinal = srtFile === voSrt;
+  let usedFix = false;
   const fixFile = findAudio(dir, "fix");
   if (fixFile && ep.fix && Number.isInteger(ep.fix.line)) {
+    usedFix = true;
     const k = ep.fix.line;
     const seg = segment(vo, chars);
     const fix = decode(fixFile);
@@ -444,22 +452,38 @@ for (const f of epFiles) {
   }
   // trim lead-in, normalise
   const [s0] = speechSpan(vo);
-  vo = concat(slice(vo, Math.max(0, s0 - 0.25), vo.length / SR), zeros(0.3));
+  const trimmed = Math.max(0, s0 - 0.25);
+  vo = concat(slice(vo, trimmed, vo.length / SR), zeros(0.3));
   let peak = 1e-9;
   for (const v of vo) peak = Math.max(peak, Math.abs(v));
   for (let i = 0; i < vo.length; i++) vo[i] = (vo[i] / peak) * 0.89;
 
-  const seg = segment(vo, chars);
   const last = ep.lines[ep.lines.length - 1].text;
   const qi = Math.max(0, last.indexOf(ep.question));
-  const ll = seg.lines[seg.lines.length - 1];
-  const tm = {
-    lines: seg.lines,
-    voEnd: +seg.s1.toFixed(2),
-    qStart: +(ll.start + (ll.end - ll.start) * (qi / last.length)).toFixed(2),
-    total: +(vo.length / SR + 3.4).toFixed(2),
-    hasAudio: true,
-  };
+  let tm;
+  const srtOk = srtFile && (srtIsFinal || !usedFix);
+  if (srtFile && !srtOk) console.log(`  ! ${ep.id}: ${path.basename(srtFile)} ignored – a fix take was spliced in. Make the SRT from public/${ep.id}/vo.wav and save it as voices/${ep.id}/vo.srt`);
+  if (srtOk) {
+    // exact timings from the subtitle file
+    const r = srtTimings(parseSrt(srtFile), ep.lines.map((l) => l.text));
+    const sh = (x) => +Math.max(0, x - (srtIsFinal ? 0 : trimmed)).toFixed(3);
+    const lines = r.lines.map((l, i) => ({ start: sh(l.start), end: sh(l.end), words: r.words[i].map(sh) }));
+    const qWord = last.slice(0, qi).split(" ").filter(Boolean).length;
+    const ll = lines[lines.length - 1];
+    tm = { lines, voEnd: ll.end, qStart: ep.question ? ll.words[Math.min(qWord, ll.words.length - 1)] : ll.end, total: +(vo.length / SR + 3.4).toFixed(2), hasAudio: true, source: "srt" };
+    console.log(`  ${ep.id}: timings from ${path.basename(srtFile)} (${Math.round(r.matched * 100)}% of letters matched)`);
+    if (r.matched < 0.6) console.log(`  ! low match – is this SRT for the same narration?`);
+  } else {
+    const seg = segment(vo, chars);
+    const ll = seg.lines[seg.lines.length - 1];
+    tm = {
+      lines: seg.lines,
+      voEnd: +seg.s1.toFixed(2),
+      qStart: +(ll.start + (ll.end - ll.start) * (qi / last.length)).toFixed(2),
+      total: +(vo.length / SR + 3.4).toFixed(2),
+      hasAudio: true,
+    };
+  }
   const out = path.join(ROOT, "public", ep.id);
   fs.mkdirSync(out, { recursive: true });
   writeWav(path.join(out, "vo.wav"), [vo]);

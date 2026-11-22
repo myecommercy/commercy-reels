@@ -43,7 +43,7 @@ export type EpisodeSpec = {
   brand?: { name?: string; tagline?: string; cta?: string; site?: string };
   music?: string;
 };
-export type Timings = { lines: { start: number; end: number }[]; voEnd: number; qStart: number; total: number; hasAudio?: boolean };
+export type Timings = { lines: { start: number; end: number; words?: number[] }[]; voEnd: number; qStart: number; total: number; hasAudio?: boolean };
 
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 const ease = Easing.bezier(0.45, 0, 0.2, 1);
@@ -197,23 +197,41 @@ const Captions: React.FC<{ ep: EpisodeSpec; T: Timings["lines"]; t: number }> = 
     if (/[.،,؟?!؛:]$/.test(w)) flush();
   }
   flush();
-  const weights = chunks.map((c) => c.join(" ").length + 3);
-  const Wt = weights.reduce((a, b) => a + b, 0);
   const { start, end } = T[i];
-  const dur = end - start;
-  let acc = start,
-    ci = chunks.length - 1,
+  const WT = T[i].words && T[i].words!.length === words.length ? T[i].words! : null;
+  let ci = chunks.length - 1,
     cS = start,
     cE = end;
-  for (let k = 0; k < chunks.length; k++) {
-    const d = (dur * weights[k]) / Wt;
-    if (t < acc + d) {
-      ci = k;
-      cS = acc;
-      cE = acc + d;
-      break;
+  // word start time (exact from SRT if available, else proportional to letters)
+  let wordAt: (k: number) => number;
+  const chunkFirst: number[] = [];
+  {
+    let n = 0;
+    for (const c of chunks) {
+      chunkFirst.push(n);
+      n += c.length;
     }
-    acc += d;
+  }
+  if (WT) {
+    wordAt = (k) => WT[k];
+    ci = 0;
+    for (let k = 0; k < chunks.length; k++) if (t >= WT[chunkFirst[k]] - 0.12) ci = k;
+  } else {
+    const weights = chunks.map((c) => c.join(" ").length + 3);
+    const Wt = weights.reduce((a, b) => a + b, 0);
+    const dur = end - start;
+    let acc = start;
+    for (let k = 0; k < chunks.length; k++) {
+      const d = (dur * weights[k]) / Wt;
+      if (t < acc + d) {
+        ci = k;
+        cS = acc;
+        cE = acc + d;
+        break;
+      }
+      acc += d;
+    }
+    wordAt = () => 0;
   }
   const chunk = chunks[ci];
   const local = interpolate(t, [cS, cE], [0, 1], clamp);
@@ -226,9 +244,10 @@ const Captions: React.FC<{ ep: EpisodeSpec; T: Timings["lines"]; t: number }> = 
       {chunk.map((w, k) => {
         const ws = cAcc / CW;
         cAcc += chars[k];
-        const on = local >= ws - 0.02;
+        const wt = WT ? wordAt(chunkFirst[ci] + k) : 0;
+        const on = WT ? t >= wt - 0.03 : local >= ws - 0.02;
         const isKey = line.keys.includes(w);
-        const appear = interpolate(local, [ws - 0.05, ws + 0.06], [0, 1], clamp);
+        const appear = WT ? interpolate(t, [wt - 0.08, wt + 0.08], [0, 1], clamp) : interpolate(local, [ws - 0.05, ws + 0.06], [0, 1], clamp);
         return (
           <span
             key={`${ci}-${k}`}

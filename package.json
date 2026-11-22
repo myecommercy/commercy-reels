@@ -42,7 +42,8 @@
     "check": "node scripts/validate.mjs",
     "kit-doc": "node scripts/kit-doc.mjs",
     "sfx-gen": "node scripts/sfx-gen.mjs",
-    "say": "node scripts/narration.mjs"
+    "say": "node scripts/narration.mjs",
+    "tts": "node scripts/tts.mjs"
   },
   "allowScripts": {
     "esbuild": false
