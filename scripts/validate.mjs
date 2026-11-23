@@ -70,7 +70,7 @@ for (const f of files) {
   if (lines.length && ep.question && !lines[lines.length - 1].text.includes(ep.question)) W.push(`question باید عیناً داخل text جمله‌ی آخر باشد، وگرنه کارت سؤال سر جایش نمی‌آید`);
   if (lines.length && !lines.some((l) => l.alert)) W.push(`هیچ جمله‌ای alert:true ندارد؛ ری‌هوک‌ها (معمولاً جمله‌ی ۲ و ۴) باید alert باشند`);
   if (lines.length > 9) W.push(`${lines.length} جمله زیاد است؛ ۶ تا ۸ جمله برای ریلز ۴۰-۵۵ ثانیه‌ای مناسب است`);
-  if (ep.fix && (!Number.isInteger(ep.fix.line) || ep.fix.line >= lines.length)) E.push(`fix.line نامعتبر است`);
+  for (const f of Array.isArray(ep.fix) ? ep.fix : ep.fix ? [ep.fix] : []) if (!Number.isInteger(f.line) || f.line < 0 || f.line >= lines.length) E.push(`fix.line نامعتبر است: ${JSON.stringify(f)}`);
   const tag = E.length ? "✗" : W.length ? "!" : "✓";
   console.log(`${tag} ${f}${E.length ? ` – ${E.length} خطا` : ""}${W.length ? ` – ${W.length} هشدار` : ""}`);
   E.forEach((m) => console.log(`   خطا:  ${m}`));

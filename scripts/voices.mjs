@@ -6,6 +6,15 @@ import { fileURLToPath } from "url";
 import { spawnSync } from "child_process";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+
+// load .env (for HTTPS_PROXY) – curl below uses it
+const envFile = path.join(ROOT, ".env");
+if (fs.existsSync(envFile))
+  for (const line of fs.readFileSync(envFile, "utf8").split(/\r?\n/)) {
+    const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*)\s*$/);
+    if (m && !process.env[m[1]]) process.env[m[1]] = m[2].replace(/^["']|["']$/g, "");
+  }
+if (process.env.HTTPS_PROXY) console.log(`(proxy: ${process.env.HTTPS_PROXY})`);
 const cfgFile = path.join(ROOT, "voices", "voices.json");
 if (!fs.existsSync(cfgFile)) {
   console.log("voices/voices.json not found – nothing to download (put full.mp3 files in voices/<id>/ by hand).");

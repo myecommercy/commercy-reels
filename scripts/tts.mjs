@@ -42,7 +42,11 @@ for (const id of ids) {
   const ep = JSON.parse(fs.readFileSync(f, "utf8"));
   const isFix = fixLine !== null;
   if (isFix && (fixLine < 0 || fixLine >= ep.lines.length)) { console.log(`✗ ${id}: جمله‌ی ${fixLine} وجود ندارد (0 تا ${ep.lines.length - 1})`); continue; }
-  const out = path.join(ROOT, "voices", id, isFix ? "fix.mp3" : "full.mp3");
+  // one fix keeps the old name fix.mp3; more fixes become fix-<line>.mp3
+  const prevFixes = Array.isArray(ep.fix) ? ep.fix : ep.fix ? [ep.fix] : [];
+  const others = prevFixes.filter((x) => x.line !== fixLine);
+  const fixName = isFix ? (others.length ? `fix-${fixLine}` : "fix") : null;
+  const out = path.join(ROOT, "voices", id, isFix ? `${fixName}.mp3` : "full.mp3");
   if (!isFix && fs.existsSync(out) && !force) { console.log(`- ${id}: full.mp3 هست – رد شد (برای ساخت دوباره: --force)`); continue; }
   const voice = ep.voice in VOICES ? VOICES[ep.voice] : ep.voice;
   if (!voice) {
@@ -64,9 +68,10 @@ for (const id of ids) {
   if (code === "200" && fs.existsSync(tmp) && fs.statSync(tmp).size > 5000) {
     fs.renameSync(tmp, out);
     if (isFix) {
-      ep.fix = { line: fixLine };
+      const entry = fixName === "fix" ? { line: fixLine } : { line: fixLine, file: fixName };
+      ep.fix = others.length ? [...others.map((x, n) => ({ line: x.line, file: x.file ?? (n === 0 ? "fix" : `fix-${x.line}`) })), entry] : entry;
       fs.writeFileSync(f, JSON.stringify(ep, null, 1));
-      console.log(`  "fix": {"line": ${fixLine}} در episodes/${id}.json ثبت شد`);
+      console.log(`  fix جمله‌ی ${fixLine} در episodes/${id}.json ثبت شد (${fixName}.mp3)`);
     }
     console.log(`✓ ${id}: voices/${id}/full.mp3 (${(fs.statSync(out).size / 1024).toFixed(0)} KB)`);
   } else {

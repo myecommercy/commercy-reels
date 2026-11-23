@@ -6,17 +6,24 @@ import fs from "fs";
 import path from "path";
 import { spawnSync } from "child_process";
 import { fileURLToPath } from "url";
+import { createRequire } from "module";
 import { readWav } from "./lib/dsp.mjs";
 import { parseSrt, srtTimings } from "./lib/srt.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const require = createRequire(import.meta.url);
+const remotionCli = path.join(path.dirname(require.resolve("@remotion/cli/package.json")), "remotion-cli.js");
 const SR = 44100;
 const only = process.argv.slice(2);
 
 // ---------------- io ----------------
 const ffmpeg = (args, input) => {
-  const r = spawnSync("npx", ["remotion", "ffmpeg", ...args], { cwd: ROOT, input, maxBuffer: 1 << 30, shell: process.platform === "win32" });
-  if (r.status !== 0) throw new Error("ffmpeg failed: " + (r.stderr || "").toString().slice(-400));
+  const r = spawnSync(process.execPath, [remotionCli, "ffmpeg", ...args], { cwd: ROOT, input, maxBuffer: 1 << 30 });
+  if (r.error) throw r.error;
+  if (r.status !== 0) {
+    const detail = r.stderr.toString().trim().slice(-400);
+    throw new Error(`ffmpeg failed (${r.signal ?? r.status})${detail ? `: ${detail}` : ""}`);
+  }
   return r.stdout;
 };
 const decode = (file) => {
@@ -429,27 +436,68 @@ for (const f of epFiles) {
   }
   const chars = ep.lines.map((l) => l.text.length);
   let vo = decode(full);
-  // vo.srt = made from the FINAL public/<id>/vo.wav (works with fix takes, no time shift)
-  // any other .srt = made from full.mp3
+  const texts = ep.lines.map((l) => l.text);
+  // ---- timing sources (best first): vo.srt (made from final vo.wav) > *.words.json (ElevenLabs Scribe) > full srt > pause detection
   const voSrt = path.join(dir, "vo.srt");
   const srtFile = fs.existsSync(voSrt) ? voSrt : fs.readdirSync(dir).map((f) => path.join(dir, f)).find((f) => /\.srt$/i.test(f));
   const srtIsFinal = srtFile === voSrt;
-  let usedFix = false;
-  const fixFile = findAudio(dir, "fix");
-  if (fixFile && ep.fix && Number.isInteger(ep.fix.line)) {
-    usedFix = true;
-    const k = ep.fix.line;
-    const seg = segment(vo, chars);
-    const fix = decode(fixFile);
-    const [fs0, fs1] = speechSpan(fix);
-    const fixSpeech = slice(fix, Math.max(0, fs0 - 0.03), fs1 + 0.12);
-    const a = k === 0 ? 0 : (seg.picked[k - 1][0] + seg.picked[k - 1][1]) / 2;
-    const b = k === chars.length - 1 ? vo.length / SR : (seg.picked[k][0] + seg.picked[k][1]) / 2;
-    const pre = k === 0 ? zeros(0.25) : zeros(0.18);
-    const post = k === chars.length - 1 ? zeros(0.3) : zeros(0.18);
-    vo = concat(slice(vo, 0, a), pre, fixSpeech, post, slice(vo, b, vo.length / SR));
-    console.log(`  ${ep.id}: replaced line ${k + 1} (${a.toFixed(2)}s – ${b.toFixed(2)}s) with fix take`);
-  }
+  const loadWords = (base) => {
+    const f = path.join(dir, base + ".words.json");
+    if (!fs.existsSync(f)) return null;
+    const w = JSON.parse(fs.readFileSync(f, "utf8"));
+    return (Array.isArray(w) ? w : w.words || []).filter((x) => (x.type ?? "word") === "word" && !/^\[|\]$/.test(x.text)).map((x) => ({ start: x.start, end: x.end, text: x.text }));
+  };
+  const fullWords = loadWords("full");
+  // ---- fix takes: "fix": {"line": 6}  or  "fix": [{"line": 0}, {"line": 8, "file": "fix-8"}]
+  const fixes = (Array.isArray(ep.fix) ? ep.fix : ep.fix ? [ep.fix] : [])
+    .map((f, n) => ({ line: f.line, file: f.file ?? (n === 0 ? "fix" : `fix-${f.line}`) }))
+    .filter((f) => Number.isInteger(f.line) && f.line >= 0 && f.line < texts.length)
+    .map((f) => ({ ...f, path: findAudio(dir, f.file) }))
+    .filter((f) => {
+      if (!f.path) console.log(`  ! ${ep.id}: voices/${ep.id}/${f.file}.mp3 not found – line ${f.line} kept from full`);
+      return !!f.path;
+    })
+    .sort((x, y) => x.line - y.line);
+  const usedFix = fixes.length > 0;
+  // map: pieces of the new narration → where they came from
+  const pieces = []; // { src: "full" | fixIndex, s0, s1, d0 }
+  if (usedFix) {
+    const fullDur = vo.length / SR;
+    let bound; // boundary between line k-1 and k in full time
+    if (fullWords) {
+      const r = srtTimings(fullWords, texts);
+      bound = (k) => (k <= 0 ? 0 : k >= texts.length ? fullDur : (r.lines[k - 1].end + r.lines[k].start) / 2);
+    } else {
+      const seg = segment(vo, chars);
+      bound = (k) => (k <= 0 ? 0 : k >= texts.length ? fullDur : (seg.picked[k - 1][0] + seg.picked[k - 1][1]) / 2);
+    }
+    const parts = [];
+    let cur = 0, d = 0;
+    const push = (buf, src, s0) => {
+      if (src !== null) pieces.push({ src, s0, s1: s0 + buf.length / SR, d0: d });
+      parts.push(buf);
+      d += buf.length / SR;
+    };
+    fixes.forEach((f, n) => {
+      const k = f.line;
+      const a = bound(k), b = bound(k + 1);
+      const fx = decode(f.path);
+      const [f0, f1] = speechSpan(fx);
+      const fs0 = Math.max(0, f0 - 0.03);
+      push(slice(vo, cur, a), "full", cur);
+      push(k === 0 ? zeros(0.25) : zeros(0.18), null);
+      push(slice(fx, fs0, f1 + 0.12), n, fs0);
+      push(k === texts.length - 1 ? zeros(0.3) : zeros(0.18), null);
+      cur = b;
+      console.log(`  ${ep.id}: line ${k + 1} (${a.toFixed(2)}s – ${b.toFixed(2)}s) replaced with ${f.file}`);
+    });
+    push(slice(vo, cur, fullDur), "full", cur);
+    vo = concat(...parts);
+  } else pieces.push({ src: "full", s0: 0, s1: vo.length / SR, d0: 0 });
+  const mapT = (src, t) => {
+    for (const p of pieces) if (p.src === src && t >= p.s0 - 1e-6 && t <= p.s1 + 1e-6) return p.d0 + (t - p.s0);
+    return null; // dropped (replaced line)
+  };
   // trim lead-in, normalise
   const [s0] = speechSpan(vo);
   const trimmed = Math.max(0, s0 - 0.25);
@@ -461,18 +509,38 @@ for (const f of epFiles) {
   const last = ep.lines[ep.lines.length - 1].text;
   const qi = Math.max(0, last.indexOf(ep.question));
   let tm;
-  const srtOk = srtFile && (srtIsFinal || !usedFix);
-  if (srtFile && !srtOk) console.log(`  ! ${ep.id}: ${path.basename(srtFile)} ignored – a fix take was spliced in. Make the SRT from public/${ep.id}/vo.wav and save it as voices/${ep.id}/vo.srt`);
-  if (srtOk) {
-    // exact timings from the subtitle file
-    const r = srtTimings(parseSrt(srtFile), ep.lines.map((l) => l.text));
-    const sh = (x) => +Math.max(0, x - (srtIsFinal ? 0 : trimmed)).toFixed(3);
+  // build word cues (in final-narration time, before trimming) from the best source
+  let cues = null, cueSrc = "";
+  if (srtFile && srtIsFinal) {
+    cues = parseSrt(srtFile).map((c) => ({ ...c, start: c.start + trimmed, end: c.end + trimmed })); // vo.srt is already in trimmed time
+    cueSrc = "vo.srt";
+  } else if (fullWords) {
+    cues = [];
+    for (const w of fullWords) {
+      const s = mapT("full", w.start), e = mapT("full", w.end);
+      if (s !== null && e !== null) cues.push({ start: s, end: e, text: w.text });
+    }
+    fixes.forEach((f, n) => {
+      const fw = loadWords(f.file);
+      const p = pieces.find((x) => x.src === n);
+      if (fw) for (const w of fw) { const s = mapT(n, w.start), e = mapT(n, w.end); if (s !== null && e !== null) cues.push({ start: s, end: e, text: w.text }); }
+      else if (p) cues.push({ start: p.d0, end: p.d0 + (p.s1 - p.s0), text: texts[f.line] });
+    });
+    cues.sort((x, y) => x.start - y.start);
+    cueSrc = "full.words.json" + (fixes.length ? " + fix" : "");
+  } else if (srtFile && !usedFix) {
+    cues = parseSrt(srtFile);
+    cueSrc = path.basename(srtFile);
+  } else if (srtFile) console.log(`  ! ${ep.id}: ${path.basename(srtFile)} ignored – a fix take was spliced in. Make the SRT from public/${ep.id}/vo.wav and save it as voices/${ep.id}/vo.srt`);
+  if (cues && cues.length) {
+    const r = srtTimings(cues, texts);
+    const sh = (x) => +Math.max(0, x - trimmed).toFixed(3);
     const lines = r.lines.map((l, i) => ({ start: sh(l.start), end: sh(l.end), words: r.words[i].map(sh) }));
     const qWord = last.slice(0, qi).split(" ").filter(Boolean).length;
     const ll = lines[lines.length - 1];
-    tm = { lines, voEnd: ll.end, qStart: ep.question ? ll.words[Math.min(qWord, ll.words.length - 1)] : ll.end, total: +(vo.length / SR + 3.4).toFixed(2), hasAudio: true, source: "srt" };
-    console.log(`  ${ep.id}: timings from ${path.basename(srtFile)} (${Math.round(r.matched * 100)}% of letters matched)`);
-    if (r.matched < 0.6) console.log(`  ! low match – is this SRT for the same narration?`);
+    tm = { lines, voEnd: ll.end, qStart: ep.question ? ll.words[Math.min(qWord, ll.words.length - 1)] : ll.end, total: +(vo.length / SR + 3.4).toFixed(2), hasAudio: true, source: cueSrc };
+    console.log(`  ${ep.id}: exact timings from ${cueSrc} (${Math.round(r.matched * 100)}% of letters matched)`);
+    if (r.matched < 0.6) console.log(`  ! low match – is this timing file for the same narration?`);
   } else {
     const seg = segment(vo, chars);
     const ll = seg.lines[seg.lines.length - 1];

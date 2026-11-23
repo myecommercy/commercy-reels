@@ -1,0 +1,135 @@
+{
+  "id": "ep11",
+  "title": "درگاه پرداخت: پول واقعاً چطور جابه‌جا می‌شه؟",
+  "voice": "علی",
+  "theme": "commercy-dark",
+  "music": "none",
+  "autoSfx": false,
+  "question": "تسویه فوری چه فرقی با تسویه زمان‌بندی‌شده داره؟",
+  "finalBig": ["تأیید خرید", "≠", "واریز به فروشنده"],
+  "objects": [
+    { "id": "buyer", "type": "phone", "x": -2.6, "z": 3.1, "from": 0, "label": "خریدار", "labelFrom": 4 },
+    { "id": "card", "type": "card", "x": -4.4, "z": 4.7, "from": 0 },
+    { "id": "gateway", "type": "server", "x": -2.7, "z": -0.6, "from": 0, "label": "درگاه", "labelFrom": 4 },
+    { "id": "network", "type": "bank", "x": 1.1, "z": -2.8, "from": 1, "label": "شبکه بانکی", "labelFrom": 4 },
+    { "id": "merchant", "type": "store", "x": 3.4, "z": 1.3, "from": 1, "label": "فروشنده", "labelFrom": 2 },
+    { "id": "timer", "type": "hourglass", "x": 4.8, "z": 3.8, "from": 2 },
+    { "id": "account", "type": "wallet", "x": 2.5, "z": 3.5, "from": 3, "label": "حساب فروشنده", "labelFrom": 6 }
+  ],
+  "lines": [
+    {
+      "text": "روی «پرداخت» می‌زنی. پشت این دکمه، پول نقد تکون نمی‌خوره؛ فقط عددها عوض می‌شن.",
+      "say": "[curious] روی پرداخت می‌زنی. پشت این دکمه، پول نقد تکون نمی‌خوره. [short pause] فقط عددها عوض می‌شن.",
+      "chip": "پشت دکمهٔ پرداخت",
+      "keys": ["«پرداخت»", "عددها"],
+      "alert": false,
+      "do": {
+        "cam": ["buyer", "card"],
+        "maxZoom": 1.55,
+        "routes": [{ "from": "buyer", "to": "gateway", "at": [0.38, 0.72], "dots": 4, "until": 1 }],
+        "icons": [{ "icon": "code", "on": "gateway", "at": 0.7, "anim": "pulse", "until": 1 }]
+      }
+    },
+    {
+      "text": "دو تا تخته تصور کن: صد تومن برای تو، صفر برای فروشنده. بعد از تسویه، می‌شه صفر برای تو و صد برای فروشنده.",
+      "say": "[conversational] دو تا تخته تصور کن: صد تومن برای تو، صفر برای فروشنده. بعد از تسویه، می‌شه صفر برای تو و صد برای فروشنده.",
+      "chip": "خریدار ۱۰۰ ← ۰ | فروشنده ۰ ← ۱۰۰",
+      "keys": ["صد", "صفر"],
+      "alert": false,
+      "do": {
+        "cam": ["buyer", "merchant"],
+        "packets": [{ "icon": "coin", "from": "buyer", "to": "merchant", "at": [0.56, 0.84] }],
+        "icons": [{ "icon": "chartUp", "on": "merchant", "at": 0.75, "anim": "bounce", "until": 2 }],
+        "dim": ["gateway", "network"]
+      }
+    },
+    {
+      "text": "اما «پرداخت موفق» یعنی خرید تأیید شده. ممکنه هنوز پول به حساب فروشنده نرسیده باشه.",
+      "say": "[surprised] اما... [short pause] پرداخت موفق یعنی خرید تأیید شده. ممکنه هنوز پول به حساب فروشنده نرسیده باشه.",
+      "chip": "پرداخت موفق، حساب در انتظار",
+      "keys": ["موفق»", "هنوز"],
+      "alert": true,
+      "do": {
+        "cam": ["buyer", "merchant", "timer"],
+        "alert": ["timer"],
+        "icons": [
+          { "icon": "check", "on": "buyer", "at": 0.18, "anim": "flip", "until": 3 },
+          { "icon": "clock", "on": "merchant", "at": 0.55, "anim": "shake", "until": 3 }
+        ]
+      }
+    },
+    {
+      "text": "واریز معمولاً بعدتر انجام می‌شه. شبکه تراکنش‌ها رو جمع می‌کنه و طبق زمان‌بندی و قواعد خودش حساب‌وکتاب می‌کنه.",
+      "say": "[serious] واریز معمولاً بعدتر انجام می‌شه. شبکه تراکنش‌ها رو جمع می‌کنه و طبق زمان‌بندی و قواعد خودش حساب‌وکتاب می‌کنه.",
+      "chip": "تجمیع تراکنش‌ها",
+      "keys": ["بعدتر", "زمان‌بندی"],
+      "alert": false,
+      "do": {
+        "cam": ["gateway", "network", "timer"],
+        "queue": { "from": "gateway", "to": "network", "n": 5, "at": 0.25, "until": 4 },
+        "icons": [{ "icon": "gear", "on": "network", "at": 0.55, "anim": "spin", "until": 4 }]
+      }
+    },
+    {
+      "text": "اسم این مرحله تسویه‌ست. حالا از اول ببینیم چی می‌شه: روی پرداخت می‌زنی و درگاه درخواستت رو امن به شبکه می‌فرسته.",
+      "say": "[confident] اسم این مرحله، [short pause] تسویه‌ست. [curious] حالا از اول ببینیم چی می‌شه: روی پرداخت می‌زنی و درگاه درخواستت رو امن به شبکه می‌فرسته.",
+      "chip": "۱ · خریدار   ۲ · درگاه",
+      "keys": ["تسویه‌ست.", "درگاه"],
+      "alert": true,
+      "do": {
+        "cam": ["buyer", "gateway", "network"],
+        "routes": [
+          { "from": "buyer", "to": "gateway", "at": [0.43, 0.64], "dots": 4, "until": 5 },
+          { "from": "gateway", "to": "network", "at": [0.65, 0.86], "dots": 5, "until": 5 }
+        ],
+        "packets": [{ "icon": "lock", "from": "gateway", "to": "network", "at": [0.68, 0.88] }],
+        "pulse": ["gateway"]
+      }
+    },
+    {
+      "text": "بانکی که کارتت رو صادر کرده، موجودی و اعتبار درخواست رو بررسی می‌کنه. اگه تأییدش کنه، جواب برمی‌گرده و پیام «پرداخت موفق» رو می‌بینی.",
+      "say": "[conversational] بانکی که کارتت رو صادر کرده، موجودی و اعتبار درخواست رو بررسی می‌کنه. اگه تأییدش کنه، جواب برمی‌گرده و پیام پرداخت موفق رو می‌بینی.",
+      "chip": "۳ · بررسی و پاسخ شبکه بانکی",
+      "keys": ["موجودی", "تأییدش"],
+      "alert": false,
+      "do": {
+        "cam": ["network", "gateway", "buyer"],
+        "icons": [
+          { "icon": "shield", "on": "network", "at": 0.14, "anim": "pulse", "until": 6 },
+          { "icon": "check", "on": "buyer", "at": 0.8, "anim": "flip", "until": 6 }
+        ],
+        "routes": [
+          { "from": "network", "to": "gateway", "at": [0.4, 0.58], "dots": 4, "until": 6 },
+          { "from": "gateway", "to": "buyer", "at": [0.59, 0.8], "dots": 4, "until": 6 }
+        ]
+      }
+    },
+    {
+      "text": "تو چرخهٔ تسویه، مبلغی که باید واریز بشه به حساب فروشنده می‌رسه. تأیید خرید سریع اتفاق می‌افته؛ واریز زمان خودش رو داره.",
+      "say": "[confident] تو چرخهٔ تسویه، مبلغی که باید واریز بشه به حساب فروشنده می‌رسه. تأیید خرید سریع اتفاق می‌افته. واریز زمان خودش رو داره.",
+      "chip": "۴ · تسویه با فروشنده",
+      "keys": ["تسویه،", "واریز"],
+      "alert": false,
+      "do": {
+        "cam": ["network", "merchant", "account"],
+        "routes": [{ "from": "network", "to": "account", "at": [0.19, 0.51], "dots": 6, "color": "ok", "big": true, "until": 7 }],
+        "packets": [{ "icon": "coin", "from": "network", "to": "account", "at": [0.23, 0.51] }],
+        "icons": [{ "icon": "check", "on": "account", "at": 0.51, "anim": "bounce", "until": 7 }],
+        "pulse": ["account"]
+      }
+    },
+    {
+      "text": "تسویه فوری چه فرقی با تسویه زمان‌بندی‌شده داره؟ تو کامنت‌ها بگو تا تو ویدیوی بعدی بازش کنیم.",
+      "say": "[warmly] تسویه فوری چه فرقی با تسویه زمان‌بندی‌شده داره؟ تو کامنت‌ها بگو تا تو ویدیوی بعدی بازش کنیم.",
+      "chip": "سؤال قسمت بعد",
+      "keys": ["فوری", "زمان‌بندی‌شده"],
+      "alert": false,
+      "do": {
+        "cam": ["buyer", "card"],
+        "maxZoom": 1.4,
+        "icons": [{ "icon": "chat", "on": "buyer", "at": 0.62, "anim": "bounce" }],
+        "dim": ["gateway", "network", "merchant", "timer", "account"]
+      }
+    }
+  ]
+}
